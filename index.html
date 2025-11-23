@@ -9,8 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- KaTeX for Math Rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALbuVyScbb8RI/wzeDe2t/0PaY" crossorigin="anonymous"></script>
+    <!-- Using unpkg without integrity check for maximum reliability -->
+    <link rel="stylesheet" href="https://unpkg.com/katex@0.16.9/dist/katex.min.css" />
+    <script defer src="https://unpkg.com/katex@0.16.9/dist/katex.min.js"></script>
     
     <!-- Google Fonts: Ma Shan Zheng (Calligraphy) and Noto Serif SC -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +39,17 @@
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #92400e; 
+      }
+      
+      /* KaTeX Adjustment for Chinese Text alignment */
+      .katex {
+        font-size: 1.15em !important; /* Make math slightly larger to match Chinese characters */
+        text-rendering: optimizeLegibility;
+      }
+      
+      /* Ensure inline math sits on the correct baseline */
+      .katex-html {
+        display: inline-block; /* Helps with some vertical alignment issues */
       }
     </style>
   <script type="importmap">

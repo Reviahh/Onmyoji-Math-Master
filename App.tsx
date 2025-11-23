@@ -1,10 +1,28 @@
+
 import React, { useState, useEffect } from 'react';
 import { CHAPTERS } from './constants';
 import { SubjectType } from './types';
-import SubjectCard from './components/SubjectCard';
 import ScrollContainer from './components/ScrollContainer';
 import MathRenderer from './components/MathRenderer';
 import { BookOpen, Flame, Calculator, Sparkles, ChevronRight, ChevronLeft, Map, ScrollText } from 'lucide-react';
+
+// Utility to parse text with inline LaTeX ($...$) and render efficiently
+const MathParser: React.FC<{ text: string }> = ({ text }) => {
+  if (!text) return null;
+  const parts = text.split(/(\$[^$]+\$)/g);
+  
+  return (
+    <span>
+      {parts.map((part, index) => {
+        if (part.startsWith('$') && part.endsWith('$')) {
+          const formula = part.slice(1, -1);
+          return <MathRenderer key={index} formula={formula} block={false} />;
+        }
+        return <span key={index}>{part}</span>;
+      })}
+    </span>
+  );
+};
 
 const App: React.FC = () => {
   const [activeSubject, setActiveSubject] = useState<SubjectType>(SubjectType.LINEAR_ALGEBRA);
@@ -13,14 +31,9 @@ const App: React.FC = () => {
 
   const currentChapter = CHAPTERS.find(c => c.subject === activeSubject) || CHAPTERS[0];
   
-  // Safety check: Ensure index is valid for the current chapter immediately during render.
-  // This handles the case where we switch from a subject with 4 sections to one with 3,
-  // preventing the "undefined" error before the useEffect below runs.
   const safeSectionIndex = activeSectionIndex < currentChapter.sections.length ? activeSectionIndex : 0;
-  
   const activeSection = currentChapter.sections[safeSectionIndex];
 
-  // Reset section index when subject changes
   useEffect(() => {
     setActiveSectionIndex(0);
   }, [activeSubject]);
@@ -49,15 +62,14 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#1c1917] text-stone-200 selection:bg-red-900 selection:text-white overflow-x-hidden font-serif">
       
-      {/* Decorative Background Elements */}
+      {/* Decorative Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-red-900/10 rounded-full blur-3xl animate-pulse duration-[10000ms]"></div>
          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-amber-900/10 rounded-full blur-3xl"></div>
-         {/* Static pattern overlay */}
          <div className="absolute inset-0 opacity-5" style={{backgroundImage: 'radial-gradient(#444 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
       </div>
 
-      {/* Compact Header */}
+      {/* Header */}
       <header className="relative z-10 pt-6 pb-2 px-4 text-center border-b border-stone-800/50 bg-[#1c1917]/80 backdrop-blur-md">
         <div className="flex items-center justify-center gap-4">
            <div className="hidden md:flex items-center gap-2 p-1 px-3 border border-amber-800/40 rounded-full bg-stone-900/50">
@@ -70,36 +82,51 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <main className="relative z-10 max-w-7xl mx-auto px-2 md:px-6 pt-6 pb-12">
         
-        {/* Subject Selection Tabs (Compact) */}
-        <div className="flex overflow-x-auto pb-4 gap-4 mb-4 md:justify-center md:pb-0 hide-scrollbar">
-          {Object.values(SubjectType).map((sub) => {
-            const chap = CHAPTERS.find(c => c.subject === sub);
-            const isActive = activeSubject === sub;
-            return (
-              <button
-                key={sub}
-                onClick={() => setActiveSubject(sub)}
-                className={`
-                  flex items-center gap-2 px-6 py-3 rounded-full border transition-all duration-300 whitespace-nowrap
-                  ${isActive 
-                    ? 'bg-amber-900/20 border-amber-600 text-amber-100 shadow-[0_0_15px_rgba(180,83,9,0.3)]' 
-                    : 'bg-stone-900/40 border-stone-700 text-stone-500 hover:border-stone-500 hover:text-stone-300'}
-                `}
-              >
-                <span className={`text-lg font-calligraphy ${isActive ? 'text-amber-500' : ''}`}>{chap?.title.split(' ')[0]}</span>
-                <span className="text-xs tracking-wider uppercase opacity-70">{chap?.subject.replace('_', ' ')}</span>
-              </button>
-            )
-          })}
+        {/* Improved Subject Navigation: Horizontal Ribbon */}
+        <div className="relative mb-8 group">
+          <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#1c1917] to-transparent z-10 pointer-events-none md:hidden" />
+          <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#1c1917] to-transparent z-10 pointer-events-none md:hidden" />
+          
+          <div className="flex overflow-x-auto pb-4 gap-4 px-2 snap-x snap-mandatory scrollbar-hide md:justify-center">
+            {Object.values(SubjectType).map((sub) => {
+              const chap = CHAPTERS.find(c => c.subject === sub);
+              const isActive = activeSubject === sub;
+              return (
+                <button
+                  key={sub}
+                  onClick={() => setActiveSubject(sub)}
+                  className={`
+                    flex-shrink-0 snap-center relative
+                    flex flex-col items-center justify-center 
+                    w-32 h-20 md:w-40 md:h-24 px-2 py-1
+                    border-2 rounded transition-all duration-300
+                    ${isActive 
+                      ? 'bg-[#292524] border-amber-600 text-amber-500 -translate-y-1 shadow-[0_4px_20px_rgba(180,83,9,0.4)]' 
+                      : 'bg-[#1c1917] border-stone-800 text-stone-600 hover:border-stone-600 hover:text-stone-400 hover:bg-[#222]'}
+                  `}
+                >
+                  {isActive && (
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                  )}
+                  <div className="text-2xl md:text-3xl font-calligraphy mb-1">
+                    {chap?.title.split(' ')[0]}
+                  </div>
+                  <div className="text-[10px] uppercase tracking-widest font-bold opacity-60">
+                     {sub.replace('_', ' ')}
+                  </div>
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        {/* Layout: Sidebar + Main Stage */}
+        {/* Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto min-h-[600px]">
           
-          {/* Left Sidebar: Section Navigation (Menu) */}
+          {/* Sidebar Menu */}
           <div className="lg:col-span-3 flex flex-col gap-3">
              <div className="bg-stone-900/50 p-4 rounded-lg border border-stone-800 backdrop-blur-sm">
                 <h3 className="text-stone-400 text-xs uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
@@ -129,16 +156,12 @@ const App: React.FC = () => {
                             </span>
                           </div>
                         </div>
-                        {isActive && (
-                           <div className="absolute top-0 right-0 bottom-0 w-16 bg-gradient-to-l from-amber-900/10 to-transparent pointer-events-none" />
-                        )}
                       </button>
                     );
                   })}
                 </div>
              </div>
 
-             {/* Quick Tip / Flavor Text */}
              <div className="hidden lg:block bg-stone-900/30 p-4 rounded-lg border border-stone-800/50 mt-auto">
                 <p className="text-stone-500 text-xs italic leading-relaxed">
                    "{currentChapter.description}"
@@ -146,18 +169,16 @@ const App: React.FC = () => {
              </div>
           </div>
 
-          {/* Right Area: The Content Scroll */}
+          {/* Main Content */}
           <div className="lg:col-span-9 flex flex-col h-full">
             <ScrollContainer title={activeSection.title}>
               <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 
-                {/* Top: Section Content & Character */}
                 <div className="flex flex-col xl:flex-row gap-8 mb-8">
                     
-                    {/* Text & Math */}
                     <div className="flex-1 space-y-6">
                        <div className="text-lg text-stone-800 leading-loose font-serif">
-                          {activeSection.content}
+                          <MathParser text={activeSection.content} />
                        </div>
                        
                        {activeSection.formula && (
@@ -171,18 +192,21 @@ const App: React.FC = () => {
                            <h4 className="flex items-center gap-2 text-xs font-bold text-blue-900 uppercase tracking-wider mb-2">
                              <BookOpen className="w-3 h-3" /> 数学原理
                            </h4>
-                           <p className="text-stone-700 text-sm leading-relaxed">{activeSection.explanation}</p>
+                           <p className="text-stone-700 text-sm leading-relaxed">
+                             <MathParser text={activeSection.explanation} />
+                           </p>
                         </div>
                         <div className="bg-red-50/80 p-4 rounded border-l-2 border-red-800">
                            <h4 className="flex items-center gap-2 text-xs font-bold text-red-900 uppercase tracking-wider mb-2">
                              <Flame className="w-3 h-3" /> 游戏映射
                            </h4>
-                           <p className="text-stone-700 text-sm font-medium leading-relaxed">{activeSection.analogy}</p>
+                           <p className="text-stone-700 text-sm font-medium leading-relaxed">
+                             <MathParser text={activeSection.analogy} />
+                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Character Card */}
                     <div className="w-full xl:w-64 flex-shrink-0">
                       <div className="bg-stone-200 p-2 rounded shadow-inner border border-stone-300 -rotate-1 hover:rotate-0 transition-transform duration-500">
                         <div className="bg-stone-800 rounded overflow-hidden relative aspect-[3/4] group cursor-pointer">
@@ -206,7 +230,6 @@ const App: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Bottom: Combat Log */}
                 {activeSection.combatScenario && (
                    <div className="bg-[#2a2a2a] rounded border border-stone-600 overflow-hidden font-mono text-sm shadow-md mt-4">
                      <div className="bg-[#1a1a1a] px-3 py-1.5 border-b border-stone-600 flex justify-between items-center">
@@ -218,17 +241,17 @@ const App: React.FC = () => {
                         <div className="flex gap-4">
                            <span className="text-stone-500 w-16 shrink-0 text-xs pt-1">SCENARIO</span>
                            <div>
-                              <p className="text-stone-100 font-bold">{activeSection.combatScenario.title}</p>
-                              <p className="text-stone-400 text-xs">{activeSection.combatScenario.description}</p>
+                              <p className="text-stone-100 font-bold"><MathParser text={activeSection.combatScenario.title} /></p>
+                              <p className="text-stone-400 text-xs"><MathParser text={activeSection.combatScenario.description} /></p>
                            </div>
                         </div>
                         <div className="flex gap-4">
                            <span className="text-blue-500 w-16 shrink-0 text-xs pt-1">CALC</span>
-                           <p className="text-blue-200/90 italic">{activeSection.combatScenario.calculation}</p>
+                           <p className="text-blue-200/90 italic"><MathParser text={activeSection.combatScenario.calculation} /></p>
                         </div>
                         <div className="flex gap-4 items-center bg-stone-800/50 p-2 rounded -mx-2">
                            <span className="text-green-500 w-16 shrink-0 text-xs pl-2">RESULT</span>
-                           <p className="text-green-400 font-bold">{activeSection.combatScenario.result}</p>
+                           <p className="text-green-400 font-bold"><MathParser text={activeSection.combatScenario.result} /></p>
                         </div>
                      </div>
                    </div>
@@ -236,7 +259,6 @@ const App: React.FC = () => {
               </div>
             </ScrollContainer>
             
-            {/* Pagination Controls */}
             <div className="flex justify-between items-center mt-4 px-2">
                <button 
                  onClick={prevSection}

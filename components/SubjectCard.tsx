@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SubjectType } from '../types';
 
@@ -21,6 +22,8 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject, title, subTitle, act
         return 'border-amber-700 text-amber-900 hover:bg-amber-50';
       case SubjectType.REAL_ANALYSIS:
         return 'border-emerald-800 text-emerald-900 hover:bg-emerald-50';
+      case SubjectType.COMPLEX_ANALYSIS:
+        return 'border-violet-800 text-violet-900 hover:bg-violet-50';
       default:
         return 'border-stone-800 text-stone-900';
     }
