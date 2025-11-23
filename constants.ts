@@ -1,3 +1,4 @@
+
 import { Chapter, SubjectType } from './types';
 
 export const CHAPTERS: Chapter[] = [
@@ -179,6 +180,60 @@ export const CHAPTERS: Chapter[] = [
     ]
   },
   {
+    id: 'set-01',
+    subject: SubjectType.SET_THEORY,
+    title: '百鬼夜行',
+    description: '集合论：全集、子集与映射',
+    icon: 'scroll',
+    sections: [
+      {
+        title: '全集与空集',
+        characterName: 'SSR 青行灯',
+        characterImage: 'https://placehold.co/600x800/1c1917/0e7490?text=SSR+Aoandon&font=playfair-display',
+        content: '“收集一百个鬼故事”。所有的怪谈构成了一个全集 $U$。当你的鬼火槽为0时，这就构成了一个“空集” $\\emptyset$。',
+        formula: '\\forall x (x \\in U), \\emptyset \\subset U',
+        explanation: '全集是当前讨论的所有对象的总和。空集是不包含任何元素的集合。青行灯的被动“明灯”就是在空集（无火）时创造元素（鬼火）的奇迹。',
+        analogy: '你的图鉴就是一个集合 $S$。未收录活动本质上是在全集 $U$ 和你的集合 $S$ 的差集 $U - S$ 中随机抽取一个元素。',
+        combatScenario: {
+          title: '实战：未收录SSR',
+          description: '为什么真全图鉴玩家抽卡必定出新式神？',
+          calculation: '因为 $U - S$ 仅包含新式神 $\{New\}$。抽样空间被压缩到了单点集。',
+          result: '集合论保证了你必定抽到那个唯一的“补集元素”。'
+        }
+      },
+      {
+        title: '交集与并集',
+        characterName: 'SSR 帝释天',
+        characterImage: 'https://placehold.co/600x800/1c1917/0e7490?text=SSR+Taishakuten&font=playfair-display',
+        content: '“金莲”控制下的敌方回合，本质上是敌方行动集合 $A$ 与我方意志集合 $B$ 的交集。',
+        formula: 'A \\cap B = \\{ x | x \\in A \\text{ and } x \\in B \\}',
+        explanation: '交集是两个集合共有的部分。在帝释天的控制下，式神既属于对面（占用对面回合），又属于我（听我指挥）。',
+        analogy: 'PVP中的“BAN选”环节。你BAN掉的和我BAN掉的式神组成了“禁用集合”的并集 $Ban_A \\cup Ban_B$。',
+        combatScenario: {
+          title: '实战：控制覆盖',
+          description: '如果你先冰冻了敌人，又去嘲讽他。',
+          calculation: '状态集合 = \{冰冻\} $\\cup$ \{嘲讽\}。',
+          result: '由于“冰冻”导致无法行动，嘲讽的效果（强制普攻）无法在交集中体现，这叫控制重叠（浪费）。'
+        }
+      },
+      {
+        title: '映射与双射',
+        characterName: 'SSR 缘结神',
+        characterImage: 'https://placehold.co/600x800/1c1917/0e7490?text=SSR+Enmusubi&font=playfair-display',
+        content: '缘结神的“红线”将两个单位连接起来。这是一个从集合 $X$ 到集合 $Y$ 的映射 $f: X \\to Y$。',
+        formula: 'y = f(x)',
+        explanation: '如果每个 $x$ 对应唯一的 $y$，且每个 $y$ 都有对应的 $x$，这就是双射（一一对应）。',
+        analogy: '如果你给式神穿御魂，这是一对一映射。但如果用“御魂Hub”共享方案，那就是多对一映射（非单射）。',
+        combatScenario: {
+          title: '实战：协战机制',
+          description: '姑获鸟的协战。',
+          calculation: '定义函数 $Assisted(Action)$。如果 $Action \\in \\{Normal Attack\\}$，则触发协战。',
+          result: '这是对行动集合的一个特征函数映射 $\\chi_A$。'
+        }
+      }
+    ]
+  },
+  {
     id: 'real-01',
     subject: SubjectType.REAL_ANALYSIS,
     title: '实变函数',
@@ -282,6 +337,60 @@ export const CHAPTERS: Chapter[] = [
           description: '为什么云外镜一半血是满的？',
           calculation: '因为他的生命值定义域是双层的。',
           result: '理解了这个拓扑结构，你就明白了为什么治疗对他往往是反向作用（在另一个分支上移动）。'
+        }
+      }
+    ]
+  },
+  {
+    id: 'cat-01',
+    subject: SubjectType.CATEGORY_THEORY,
+    title: '森罗万象',
+    description: '范畴论：态射、函子与米田引理',
+    icon: 'galaxy',
+    sections: [
+      {
+        title: '范畴与态射',
+        characterName: 'SP 荒',
+        characterImage: 'https://placehold.co/600x800/1c1917/86198f?text=SP+Susabi&font=playfair-display',
+        content: '战场是一个范畴。每个游戏状态（State）是对象，每个技能使用（Action）是态射。态射的复合构成了整场战斗的流程。',
+        formula: 'f: A \\to B, g: B \\to C \\implies g \\circ f: A \\to C',
+        explanation: '范畴论不关心对象的内部结构（属性），只关心对象之间的关系（态射）。SP荒的“星爆”不看你具体是谁，只看你触发了什么事件（态射）。',
+        analogy: '“预言”系统本质上是对未来态射的一种约束。你必须按照规定的路径（Morphsim）走，否则受到惩罚。',
+        combatScenario: {
+          title: '实战：回合外机制',
+          description: '伪回合（如反击）是否属于态射复合？',
+          calculation: '是的。反击是插入在两个主要态射 $f$ 和 $g$ 之间的中间态射 $h$。',
+          result: '如果 $h$ 打断了 $f$ 的复合性（如眩晕），则整个交换图表（Commutative Diagram）无法闭合。'
+        }
+      },
+      {
+        title: '函子 = 体系变换',
+        characterName: 'SSR 不知火',
+        characterImage: 'https://placehold.co/600x800/1c1917/86198f?text=SSR+Shiranui&font=playfair-display',
+        content: '不知火的“星火满天”是一个函子 $F$。它将“普通攻击”范畴 $\\mathcal{C}$ 映射到了“两次攻击+吸血”范畴 $\\mathcal{D}$。',
+        formula: 'F(f: X \\to Y) = F(f): F(X) \\to F(Y)',
+        explanation: '函子保持了结构的同构性。普攻还是普攻，但性质变了。所有依赖普攻的式神（酒吞、化鲸）都在这个函子作用下获得了升维。',
+        analogy: '这也是为什么不知火体系能容纳万物。她不仅仅是一个辅助，她是改变了底层战斗逻辑（范畴结构）的函子。',
+        combatScenario: {
+          title: '实战：普攻队',
+          description: '为什么酒吞在离吞吞体系这么强？',
+          calculation: '因为酒吞的输出算子 $S$ 被函子 $F$ 作用后，变成了 $S\' = 2S + \\text{Buff}$。',
+          result: '原本线性的伤害增长变成了指数级爆炸，这是结构性变革。'
+        }
+      },
+      {
+        title: '米田引理',
+        characterName: 'SSR 铃鹿御前',
+        characterImage: 'https://placehold.co/600x800/1c1917/86198f?text=SSR+Suzuka&font=playfair-display',
+        content: '“了解一个对象的唯一方式，是观察它如何与其他对象互动。” 铃鹿御前强制敌人普攻自己，就是通过建立态射来定义战局。',
+        formula: 'Nat(Hom(A, -), F) \\cong F(A)',
+        explanation: '米田引理告诉我们：你不需要知道式神的内部代码。你只要知道它打谁、谁打它（Hom-set），你就完全掌握了这个式神的性质。',
+        analogy: '强制嘲讽（义理之心）强迫敌方建立一个指向我的态射。通过控制所有的态射（互动），我就控制了对象本身。',
+        combatScenario: {
+          title: '实战：破核',
+          description: '面对复杂的机制怪（如千姬、SP花）。',
+          calculation: '不用管她被动多复杂。强制她普攻（建立简单态射），她的复杂结构就坍缩了。',
+          result: '这就是为什么铃鹿御前是万能解：她通过控制交互（Morphsim）来定义对手。'
         }
       }
     ]

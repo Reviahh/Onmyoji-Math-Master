@@ -58,8 +58,7 @@ const MathRenderer: React.FC<MathRendererProps> = ({ formula, block = false }) =
   if (block) {
     return (
       <div className="my-4 text-center overflow-x-auto overflow-y-hidden py-2">
-        {/* Render formula as text initially (fallback), KaTeX will overwrite innerHTML if successful */}
-        {/* Removed text-stone-300 to allow inheriting color from parent (e.g. text-amber-50 in dark cards) */}
+        {/* Removed specific text colors so it inherits from parent (e.g. Combat Log text-blue-200) */}
         <span ref={containerRef} className="text-lg font-serif italic">
           {formula}
         </span>
@@ -70,8 +69,7 @@ const MathRenderer: React.FC<MathRendererProps> = ({ formula, block = false }) =
   // Inline Math
   return (
     <span className="mx-0.5">
-       {/* Render formula as text initially (fallback), KaTeX will overwrite innerHTML if successful */}
-       {/* Removed text-stone-800 to allow inheriting color from parent (e.g. text-blue-200 in combat logs) */}
+       {/* Removed specific text colors so it inherits from parent */}
       <span ref={containerRef} className="font-serif italic">
         {formula}
       </span>

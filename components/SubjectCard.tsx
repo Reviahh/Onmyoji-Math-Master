@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { SubjectType } from '../types';
+import { Axis3d, Divide, Sigma, Infinity, Globe, Layers, Component } from 'lucide-react';
 
 interface SubjectCardProps {
   subject: SubjectType;
@@ -8,54 +9,77 @@ interface SubjectCardProps {
   subTitle: string;
   active: boolean;
   onClick: () => void;
+  index: number; // Used for "Soul Slot" position numbering
 }
 
-const SubjectCard: React.FC<SubjectCardProps> = ({ subject, title, subTitle, active, onClick }) => {
-  // Theme colors based on subject
-  const getTheme = () => {
+const SubjectCard: React.FC<SubjectCardProps> = ({ subject, title, active, onClick, index }) => {
+  
+  // Map subjects to colors and icons, simulating different "Souls"
+  const getSoulConfig = () => {
     switch (subject) {
       case SubjectType.LINEAR_ALGEBRA:
-        return 'border-rose-800 text-rose-900 hover:bg-rose-50';
+        return { color: 'bg-rose-900', ring: 'border-rose-500', icon: <Axis3d className="w-6 h-6 text-rose-200" />, pos: '壹' };
       case SubjectType.CALCULUS:
-        return 'border-indigo-800 text-indigo-900 hover:bg-indigo-50';
+        return { color: 'bg-indigo-900', ring: 'border-indigo-500', icon: <Divide className="w-6 h-6 text-indigo-200" />, pos: '贰' };
       case SubjectType.PROBABILITY:
-        return 'border-amber-700 text-amber-900 hover:bg-amber-50';
+        return { color: 'bg-amber-800', ring: 'border-amber-500', icon: <Sigma className="w-6 h-6 text-amber-200" />, pos: '叁' };
       case SubjectType.REAL_ANALYSIS:
-        return 'border-emerald-800 text-emerald-900 hover:bg-emerald-50';
+        return { color: 'bg-emerald-900', ring: 'border-emerald-500', icon: <Infinity className="w-6 h-6 text-emerald-200" />, pos: '肆' };
       case SubjectType.COMPLEX_ANALYSIS:
-        return 'border-violet-800 text-violet-900 hover:bg-violet-50';
+        return { color: 'bg-violet-900', ring: 'border-violet-500', icon: <Globe className="w-6 h-6 text-violet-200" />, pos: '伍' };
+      case SubjectType.SET_THEORY:
+        return { color: 'bg-cyan-900', ring: 'border-cyan-500', icon: <Layers className="w-6 h-6 text-cyan-200" />, pos: '陆' };
+      case SubjectType.CATEGORY_THEORY:
+        return { color: 'bg-fuchsia-900', ring: 'border-fuchsia-500', icon: <Component className="w-6 h-6 text-fuchsia-200" />, pos: '觉' };
       default:
-        return 'border-stone-800 text-stone-900';
+        return { color: 'bg-stone-800', ring: 'border-stone-500', icon: <div />, pos: '?' };
     }
   };
 
-  return (
-    <button
-      onClick={onClick}
-      className={`
-        relative flex flex-col items-center justify-center p-4 md:p-6 
-        border-2 md:border-4 rounded-lg transition-all duration-300
-        w-full font-serif group overflow-hidden
-        ${active ? 'bg-[#fdfbf7] scale-105 shadow-xl z-10' : 'bg-[#e7e5e4] opacity-70 hover:opacity-100 scale-100'}
-        ${getTheme()}
-        ${active ? getTheme().replace('hover:', '') : ''}
-      `}
-    >
-      {/* Decorative circles */}
-      <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full border border-current opacity-20" />
-      <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full border-2 border-current opacity-20" />
+  const config = getSoulConfig();
 
-      <span className="text-xs md:text-sm tracking-[0.3em] uppercase mb-1 opacity-80 font-semibold">
-        {subject}
+  return (
+    <div className="flex flex-col items-center gap-2 group">
+      <button
+        onClick={onClick}
+        className={`
+          relative w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center
+          transition-all duration-300 shadow-lg border-2
+          ${active 
+            ? `scale-110 ${config.color} ${config.ring} shadow-[0_0_15px_rgba(255,255,255,0.3)] ring-2 ring-offset-2 ring-offset-[#1c1917] ring-amber-500` 
+            : 'bg-stone-800 border-stone-600 grayscale hover:grayscale-0 hover:scale-105'
+          }
+        `}
+      >
+        {/* Inner Ring Decoration */}
+        <div className={`absolute inset-1 rounded-full border border-white/10 ${active ? 'animate-spin-slow' : ''}`} />
+        
+        {/* Icon */}
+        <div className="relative z-10 drop-shadow-md">
+          {config.icon}
+        </div>
+
+        {/* Level Tag (Like +15 in game) */}
+        {active && (
+          <div className="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-amber-400 shadow-sm z-20">
+            +15
+          </div>
+        )}
+
+        {/* Slot Number (Roman Numeral / Kanji style) */}
+        <div className="absolute -bottom-2 w-5 h-5 bg-[#1c1917] border border-stone-600 rounded-full flex items-center justify-center">
+            <span className="text-[10px] text-stone-400 font-serif">{config.pos}</span>
+        </div>
+      </button>
+
+      {/* Label */}
+      <span className={`
+        text-xs md:text-sm font-calligraphy tracking-widest transition-colors duration-300
+        ${active ? 'text-amber-500 drop-shadow-md' : 'text-stone-500 group-hover:text-stone-300'}
+      `}>
+        {title.split(' ')[0]}
       </span>
-      <h3 className="text-2xl md:text-3xl font-calligraphy mb-2">{title}</h3>
-      <span className="text-xs opacity-70 italic font-serif">{subTitle}</span>
-      
-      {/* Active Indicator (looks like a talisman seal) */}
-      {active && (
-        <div className="absolute top-2 right-2 w-3 h-3 rounded-full bg-current animate-pulse" />
-      )}
-    </button>
+    </div>
   );
 };
 

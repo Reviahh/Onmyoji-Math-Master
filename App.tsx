@@ -4,7 +4,11 @@ import { CHAPTERS } from './constants';
 import { SubjectType } from './types';
 import ScrollContainer from './components/ScrollContainer';
 import MathRenderer from './components/MathRenderer';
-import { BookOpen, Flame, Calculator, Sparkles, ChevronRight, ChevronLeft, Map, ScrollText } from 'lucide-react';
+import SubjectCard from './components/SubjectCard';
+import { 
+  BookOpen, Flame, Calculator, Sparkles, ChevronRight, ChevronLeft, ScrollText,
+  Sword, Wind, Zap, Heart, Shield, Crosshair, Star
+} from 'lucide-react';
 
 // Utility to parse text with inline LaTeX ($...$) and render efficiently
 const MathParser: React.FC<{ text: string }> = ({ text }) => {
@@ -59,6 +63,19 @@ const App: React.FC = () => {
     }
   };
 
+  // Configuration for "Stat Type" styling based on index
+  const getStatConfig = (index: number) => {
+    const stats = [
+      { label: '攻击', icon: Sword, color: 'text-red-500', bg: 'bg-red-500/10' },     // Attack
+      { label: '速度', icon: Wind, color: 'text-blue-400', bg: 'bg-blue-500/10' },    // Speed
+      { label: '暴击', icon: Zap, color: 'text-amber-400', bg: 'bg-amber-500/10' },   // Crit
+      { label: '暴伤', icon: Crosshair, color: 'text-yellow-200', bg: 'bg-yellow-500/10' }, // Crit Dmg
+      { label: '生命', icon: Heart, color: 'text-green-500', bg: 'bg-green-500/10' }, // HP
+      { label: '防御', icon: Shield, color: 'text-stone-400', bg: 'bg-stone-500/10' }, // Def
+    ];
+    return stats[index % stats.length];
+  };
+
   return (
     <div className="min-h-screen bg-[#1c1917] text-stone-200 selection:bg-red-900 selection:text-white overflow-x-hidden font-serif">
       
@@ -85,80 +102,107 @@ const App: React.FC = () => {
       {/* Main Content */}
       <main className="relative z-10 max-w-7xl mx-auto px-2 md:px-6 pt-6 pb-12">
         
-        {/* Improved Subject Navigation: Horizontal Ribbon */}
-        <div className="relative mb-8 group">
-          <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#1c1917] to-transparent z-10 pointer-events-none md:hidden" />
-          <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#1c1917] to-transparent z-10 pointer-events-none md:hidden" />
-          
-          <div className="flex overflow-x-auto pb-4 gap-4 px-2 snap-x snap-mandatory scrollbar-hide md:justify-center">
-            {Object.values(SubjectType).map((sub) => {
-              const chap = CHAPTERS.find(c => c.subject === sub);
-              const isActive = activeSubject === sub;
-              return (
-                <button
-                  key={sub}
-                  onClick={() => setActiveSubject(sub)}
-                  className={`
-                    flex-shrink-0 snap-center relative
-                    flex flex-col items-center justify-center 
-                    w-32 h-20 md:w-40 md:h-24 px-2 py-1
-                    border-2 rounded transition-all duration-300
-                    ${isActive 
-                      ? 'bg-[#292524] border-amber-600 text-amber-500 -translate-y-1 shadow-[0_4px_20px_rgba(180,83,9,0.4)]' 
-                      : 'bg-[#1c1917] border-stone-800 text-stone-600 hover:border-stone-600 hover:text-stone-400 hover:bg-[#222]'}
-                  `}
-                >
-                  {isActive && (
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
-                  )}
-                  <div className="text-2xl md:text-3xl font-calligraphy mb-1">
-                    {chap?.title.split(' ')[0]}
-                  </div>
-                  <div className="text-[10px] uppercase tracking-widest font-bold opacity-60">
-                     {sub.replace('_', ' ')}
-                  </div>
-                </button>
-              )
-            })}
-          </div>
+        {/* New Navigation: Soul (Mitama) Inventory Style */}
+        <div className="mb-8 p-4 bg-stone-900/30 border border-stone-800 rounded-xl relative overflow-hidden backdrop-blur-sm">
+           <div className="absolute top-0 left-0 text-[10px] bg-stone-800 px-2 py-0.5 text-stone-500 uppercase tracking-widest rounded-br">御魂选择 · Soul Select</div>
+           
+           <div className="flex flex-wrap justify-center gap-4 md:gap-8 pt-4">
+              {Object.values(SubjectType).map((sub, index) => {
+                const chap = CHAPTERS.find(c => c.subject === sub);
+                if (!chap) return null;
+                
+                return (
+                  <SubjectCard 
+                    key={sub}
+                    index={index}
+                    subject={sub}
+                    title={chap.title}
+                    subTitle=""
+                    active={activeSubject === sub}
+                    onClick={() => setActiveSubject(sub)}
+                  />
+                );
+              })}
+           </div>
         </div>
 
         {/* Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto min-h-[600px]">
           
-          {/* Sidebar Menu */}
-          <div className="lg:col-span-3 flex flex-col gap-3">
-             <div className="bg-stone-900/50 p-4 rounded-lg border border-stone-800 backdrop-blur-sm">
-                <h3 className="text-stone-400 text-xs uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                  <ScrollText className="w-4 h-4" /> 章节目录
-                </h3>
-                <div className="space-y-2">
+          {/* Sidebar Menu (Stat Panel Style) */}
+          <div className="lg:col-span-3 flex flex-col gap-3 order-2 lg:order-1">
+             <div className="bg-[#151413] p-1 rounded-lg border border-stone-800 backdrop-blur-sm shadow-xl relative overflow-hidden">
+                {/* Panel Header */}
+                <div className="flex justify-between items-end px-3 py-3 border-b border-stone-800 mb-1">
+                    <div className="flex flex-col">
+                        <span className="text-xs text-stone-500 tracking-wider">面板属性</span>
+                        <h3 className="text-stone-200 font-bold text-lg flex items-center gap-2">
+                            <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                            评分: SSS
+                        </h3>
+                    </div>
+                    <div className="text-[10px] text-stone-600 bg-stone-900 px-1.5 py-0.5 rounded">
+                        觉醒后
+                    </div>
+                </div>
+
+                {/* Stat Rows */}
+                <div className="space-y-1 p-1">
                   {currentChapter.sections.map((section, index) => {
                     const isActive = safeSectionIndex === index;
+                    const statConfig = getStatConfig(index);
+                    const StatIcon = statConfig.icon;
+
                     return (
                       <button
                         key={index}
                         onClick={() => handleSectionChange(index)}
                         className={`
-                          w-full text-left p-3 rounded transition-all duration-300 relative overflow-hidden group
+                          w-full flex items-center justify-between p-2.5 rounded transition-all duration-200 group
                           ${isActive 
-                            ? 'bg-[#2a2725] border-l-4 border-amber-600 shadow-lg' 
-                            : 'hover:bg-stone-800/50 border-l-4 border-transparent text-stone-500'}
+                            ? 'bg-stone-800/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' 
+                            : 'hover:bg-stone-800/40 bg-transparent'}
                         `}
                       >
-                        <div className="flex items-start gap-3 relative z-10">
-                          <span className={`font-serif font-bold text-sm ${isActive ? 'text-amber-600' : 'text-stone-600 group-hover:text-stone-400'}`}>
-                            {['壹','贰','叁','肆','伍'][index]}
-                          </span>
-                          <div>
-                            <span className={`block text-sm font-medium ${isActive ? 'text-stone-100' : 'text-stone-400 group-hover:text-stone-200'}`}>
-                                {section.title.split('=')[0]}
-                            </span>
-                          </div>
+                        {/* Left: Icon + Label */}
+                        <div className="flex items-center gap-3">
+                           <div className={`
+                                w-7 h-7 rounded flex items-center justify-center shadow-inner
+                                ${isActive ? statConfig.bg : 'bg-stone-900'}
+                           `}>
+                                <StatIcon className={`w-4 h-4 ${isActive ? statConfig.color : 'text-stone-600'}`} />
+                           </div>
+                           <span className={`text-xs font-bold tracking-widest ${isActive ? statConfig.color : 'text-stone-500'}`}>
+                               {statConfig.label}
+                           </span>
+                        </div>
+
+                        {/* Right: Value (Title) */}
+                        <div className="flex items-center gap-2">
+                           <span className={`
+                                text-sm font-serif text-right truncate max-w-[120px]
+                                ${isActive ? 'text-stone-100 font-bold' : 'text-stone-400 group-hover:text-stone-300'}
+                           `}>
+                                {section.title.split('=')[0].trim()}
+                           </span>
+                           {isActive && <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />}
                         </div>
                       </button>
                     );
                   })}
+                  
+                  {/* Fills empty slots to make it look like a full panel if few sections */}
+                  {Array.from({ length: Math.max(0, 5 - currentChapter.sections.length) }).map((_, i) => (
+                      <div key={`empty-${i}`} className="flex items-center justify-between p-2.5 opacity-30 select-none grayscale">
+                         <div className="flex items-center gap-3">
+                             <div className="w-7 h-7 bg-stone-900 rounded flex items-center justify-center">
+                                <div className="w-3 h-0.5 bg-stone-700" />
+                             </div>
+                             <span className="text-xs font-bold text-stone-600">??</span>
+                         </div>
+                         <span className="text-sm text-stone-700">---</span>
+                      </div>
+                  ))}
                 </div>
              </div>
 
@@ -170,7 +214,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-9 flex flex-col h-full">
+          <div className="lg:col-span-9 flex flex-col h-full order-1 lg:order-2">
             <ScrollContainer title={activeSection.title}>
               <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 
@@ -247,11 +291,11 @@ const App: React.FC = () => {
                         </div>
                         <div className="flex gap-4">
                            <span className="text-blue-500 w-16 shrink-0 text-xs pt-1">CALC</span>
-                           <p className="text-blue-200/90 italic"><MathParser text={activeSection.combatScenario.calculation} /></p>
+                           <div className="text-blue-200/90 italic"><MathParser text={activeSection.combatScenario.calculation} /></div>
                         </div>
                         <div className="flex gap-4 items-center bg-stone-800/50 p-2 rounded -mx-2">
                            <span className="text-green-500 w-16 shrink-0 text-xs pl-2">RESULT</span>
-                           <p className="text-green-400 font-bold"><MathParser text={activeSection.combatScenario.result} /></p>
+                           <div className="text-green-400 font-bold"><MathParser text={activeSection.combatScenario.result} /></div>
                         </div>
                      </div>
                    </div>
