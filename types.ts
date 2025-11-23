@@ -2,7 +2,8 @@
 export enum SubjectType {
   LINEAR_ALGEBRA = 'LINEAR_ALGEBRA',
   CALCULUS = 'CALCULUS',
-  PROBABILITY = 'PROBABILITY'
+  PROBABILITY = 'PROBABILITY',
+  REAL_ANALYSIS = 'REAL_ANALYSIS'
 }
 
 export interface CombatScenario {

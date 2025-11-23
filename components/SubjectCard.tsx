@@ -19,6 +19,8 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject, title, subTitle, act
         return 'border-indigo-800 text-indigo-900 hover:bg-indigo-50';
       case SubjectType.PROBABILITY:
         return 'border-amber-700 text-amber-900 hover:bg-amber-50';
+      case SubjectType.REAL_ANALYSIS:
+        return 'border-emerald-800 text-emerald-900 hover:bg-emerald-50';
       default:
         return 'border-stone-800 text-stone-900';
     }

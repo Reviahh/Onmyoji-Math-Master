@@ -178,5 +178,59 @@ export const CHAPTERS: Chapter[] = [
         }
       }
     ]
+  },
+  {
+    id: 'real-01',
+    subject: SubjectType.REAL_ANALYSIS,
+    title: '神域的底层逻辑',
+    description: '实变函数核心概念：测度论、勒贝格积分与几乎处处收敛',
+    icon: 'infinity',
+    sections: [
+      {
+        title: '测度论 = 行动条的相对长度',
+        characterName: 'SSR 镰鼬',
+        characterImage: 'https://placehold.co/600x800/1c1917/047857?text=SSR+Kamaitachi&font=playfair-display',
+        content: '黎曼积分是在线性的时间轴（X轴）上切分，认为时间是均匀流逝的。但对镰鼬来说，通过被动“人多势众”（概率获得新回合），他扭曲了时间轴的长度。',
+        formula: 'm(E) = \\sum_{i} |Turn_i| > T_{linear}',
+        explanation: '在实变函数中，我们关注集合的“测度”（Measure/大小）。镰鼬的被动触发使得他的行动集合在测度上远大于普通式神。',
+        analogy: '虽然面板速度只有270（黎曼长度），但因为有30%概率再动（测度增加），他的“有效行动测度”可能等效于350速的阎魔。',
+        combatScenario: {
+          title: '实战：永动机玩法',
+          description: '为什么镰鼬疯狂多动能让对面完全静止？',
+          calculation: '因为镰鼬的行动测度覆盖了整个时间轴。如果 $m(MyTurns) \\approx TotalTime$，则 $m(EnemyTurns) \\to 0$。',
+          result: '这就是时间静止。敌人的时间在流逝（黎曼意义下），但他们的有效行动测度为零（实变意义下）。'
+        }
+      },
+      {
+        title: '勒贝格积分 = 间接伤害结算',
+        characterName: 'SSR 面灵气',
+        characterImage: 'https://placehold.co/600x800/1c1917/047857?text=SSR+Menreiki&font=playfair-display',
+        content: '黎曼积分是按顺序一个个打（从第一个怪到第六个怪）。勒贝格积分是“按值域划分”：先把所有防御为0的怪归为一组，把防御高的归为另一组，再分别计算。',
+        formula: '\\int f \\, d\\mu = \\sum_{v} v \\cdot \\mu(\\{x : D(x)=v\\})',
+        explanation: '面灵气的间接伤害机制完美诠释了勒贝格积分：伤害值取决于敌方防御是否为0（值域的划分），而不是敌人的站位顺序（定义域的划分）。',
+        analogy: '计算总伤害时，我们不关心打的是谁。我们只关心：场上有几个0防单位（$N_{zero}$）？有几个高防单位（$N_{high}$）？总伤 = $N_{zero} \\times CritDmg + N_{high} \\times WhiteDmg$。',
+        combatScenario: {
+          title: '实战：超鬼王清场',
+          description: '为什么面灵气配合清姬清场效率极高？',
+          calculation: '清姬把所有怪的防御降为0。此时整个定义域上的函数值突变为常数极大值。',
+          result: '勒贝格积分直接对这个“全集”进行求和，计算过程极其稳定，不受单个怪物个体差异的影响。'
+        }
+      },
+      {
+        title: '几乎处处收敛 = 针女的收敛性',
+        characterName: 'SSR 妖刀姬',
+        characterImage: 'https://placehold.co/600x800/1c1917/047857?text=SSR+Yotohime&font=playfair-display',
+        content: '针女的触发是随机的。对于单次攻击，伤害极其不稳定（点态不收敛）。但当你使用多段输出（如妖刀姬、烬天玉藻前）时，伤害总和会“依概率/依测度”收敛。',
+        formula: 'f_n \\to f \\quad (a.e.)',
+        explanation: '几乎处处收敛（Almost Everywhere）意味着除了一个测度为0的集合（即极端霉运情况）外，结果都是收敛的。',
+        analogy: '虽然理论上存在“妖刀姬6刀全都不触发针女”的可能性（非零概率），但在实变函数的宏观视角下，这个集合的测度趋近于0，可以被忽略。',
+        combatScenario: {
+          title: '实战：魂土求稳',
+          description: '为什么开荒推荐针女，竞速推荐狂骨？',
+          calculation: '针女是“依测度收敛”，狂骨是“一致收敛”（Uniform Convergence）。',
+          result: '竞速要求100%不翻车（绝对收敛），不能容忍那个测度极小的“全白字”事件发生。所以实变函数告诉我们：追求极致稳定时，不要相信随机测度。'
+        }
+      }
+    ]
   }
 ];
