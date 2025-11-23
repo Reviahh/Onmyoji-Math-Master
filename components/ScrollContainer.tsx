@@ -1,3 +1,4 @@
+
 import React, { ReactNode } from 'react';
 
 interface ScrollContainerProps {
@@ -7,15 +8,15 @@ interface ScrollContainerProps {
 
 const ScrollContainer: React.FC<ScrollContainerProps> = ({ children, title }) => {
   return (
-    <div className="relative w-full max-w-4xl mx-auto my-8 perspective-1000">
+    <div className="relative w-full h-full perspective-1000 flex flex-col">
       {/* Top Scroll Roller */}
-      <div className="h-8 bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 rounded-full shadow-lg relative z-20 border-b-2 border-amber-950">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-stone-900 rounded-full border-4 border-amber-700 -ml-2" />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-stone-900 rounded-full border-4 border-amber-700 -mr-2" />
+      <div className="h-6 md:h-8 bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 rounded-full shadow-lg relative z-20 border-b-2 border-amber-950 shrink-0">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-stone-900 rounded-full border-4 border-amber-700 -ml-2" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-stone-900 rounded-full border-4 border-amber-700 -mr-2" />
       </div>
 
       {/* Paper Body */}
-      <div className="bg-[#f7f2e6] relative shadow-2xl mx-2 min-h-[600px] overflow-hidden">
+      <div className="bg-[#f7f2e6] relative shadow-2xl mx-1 md:mx-2 overflow-hidden flex-1 flex flex-col">
         
         {/* Paper Texture Overlay */}
         <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply" 
@@ -23,32 +24,31 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({ children, title }) =>
         />
 
         {/* Content Wrapper */}
-        <div className="relative p-8 md:p-12 text-stone-800">
+        <div className="relative p-6 md:p-10 text-stone-800 flex-1">
           
           {/* Inner Border */}
-          <div className="absolute top-4 bottom-4 left-4 right-4 border border-stone-300 pointer-events-none" />
-          <div className="absolute top-5 bottom-5 left-5 right-5 border border-stone-300 pointer-events-none opacity-50" />
+          <div className="absolute top-3 bottom-3 left-3 right-3 border border-stone-300 pointer-events-none" />
+          <div className="absolute top-4 bottom-4 left-4 right-4 border border-stone-300 pointer-events-none opacity-50" />
 
           {/* Header */}
-          <div className="text-center mb-12 border-b-2 border-stone-800 pb-6 mx-auto max-w-lg">
-            <h2 className="text-4xl md:text-5xl font-calligraphy text-stone-900 mb-2 drop-shadow-sm">
+          <div className="text-center mb-6 border-b-2 border-stone-800/20 pb-4 mx-auto max-w-lg relative z-10">
+            <h2 className="text-2xl md:text-4xl font-calligraphy text-stone-900 mb-1 drop-shadow-sm">
               {title}
             </h2>
-            <div className="flex items-center justify-center gap-2 text-red-800">
-               <span className="text-xs tracking-[0.5em] uppercase">阴阳师数学课</span>
-            </div>
           </div>
 
           {/* Dynamic Content */}
-          {children}
+          <div className="relative z-10">
+            {children}
+          </div>
 
         </div>
       </div>
 
       {/* Bottom Scroll Roller */}
-      <div className="h-8 bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 rounded-full shadow-lg relative z-20 border-t-2 border-amber-950 -mt-1">
-         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-stone-900 rounded-full border-4 border-amber-700 -ml-2" />
-         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-stone-900 rounded-full border-4 border-amber-700 -mr-2" />
+      <div className="h-6 md:h-8 bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 rounded-full shadow-lg relative z-20 border-t-2 border-amber-950 -mt-1 shrink-0">
+         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-stone-900 rounded-full border-4 border-amber-700 -ml-2" />
+         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-stone-900 rounded-full border-4 border-amber-700 -mr-2" />
       </div>
     </div>
   );

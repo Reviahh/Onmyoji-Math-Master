@@ -12,7 +12,7 @@ export const CHAPTERS: Chapter[] = [
       {
         title: '向量 = 式神的属性面板',
         characterName: 'SSR 茨木童子',
-        characterImage: 'https://p1.music.126.net/K7u9-yP4VvJ_dJj7h9v9Kw==/109951163065675865.jpg', // Placeholder or generic
+        characterImage: 'https://placehold.co/600x800/1c1917/b45309?text=SSR+Ibaraki+Doji&font=playfair-display', 
         content: '打开你的茨木童子面板，你会看到：攻击 3216、暴击 10%、暴伤 150%、速度 112。这组有序的数字，就是一个 4维列向量。',
         formula: 'v = \\begin{bmatrix} 3216 \\\\ 112 \\\\ 0.10 \\\\ 1.50 \\end{bmatrix} \\begin{matrix} (ATK) \\\\ (SPD) \\\\ (CRIT) \\\\ (CDMG) \\end{matrix}',
         explanation: '向量是“有多个数构成的一个整体”。在线性代数中，我们不关心“攻击”意味着什么，我们只关心它在空间中的位置和变换。',
@@ -25,9 +25,9 @@ export const CHAPTERS: Chapter[] = [
         }
       },
       {
-        title: '矩阵变换 = 御魂套装的效果',
+        title: '矩阵变换 = 御魂套装效果',
         characterName: 'SSR 玉藻前',
-        characterImage: 'https://p1.music.126.net/g3y7XV7w9q9q9q9q9q9q9g==/109951163065675865.jpg', 
+        characterImage: 'https://placehold.co/600x800/1c1917/b45309?text=SSR+Tamamo+no+Mae&font=playfair-display', 
         content: '当你给玉藻前装上“破势”四件套时，本质上是对他的基础向量进行了线性变换。破势效果：对生命值高于70%的单位造成额外40%伤害。',
         formula: 'D_{final} = \\begin{bmatrix} 1.4 & 0 \\\\ 0 & 1 \\end{bmatrix} \\cdot \\begin{bmatrix} D_{base} \\\\ H_{enemy} \\end{bmatrix}',
         explanation: '矩阵 $A$ 作为一个算子（Operator），作用在向量 $v$ 上，将其映射为一个新的向量 $v\'$。',
@@ -40,13 +40,28 @@ export const CHAPTERS: Chapter[] = [
         }
       },
       {
-        title: '特征值 (Eigenvalue) = 纯粹的增伤倍率',
+        title: '矩阵乘法 = 技能连招 (Combo)',
+        characterName: 'SSR 妖刀姬',
+        characterImage: 'https://placehold.co/600x800/1c1917/b45309?text=SSR+Yotohime&font=playfair-display',
+        content: '单一的矩阵是对一次变换。而技能连招（先破甲，再输出，再斩杀）则是多个矩阵的连续相乘。注意：矩阵乘法不满足交换律！',
+        formula: 'v_{final} = (C \\cdot (B \\cdot (A \\cdot v)))',
+        explanation: '矩阵乘法的顺序至关重要。$AB \\neq BA$。先穿衣服再洗澡，和先洗澡再穿衣服，结果截然不同。',
+        analogy: '先放“丑时之女”的草人（矩阵A：传递伤害），再放“晴明”的星（矩阵B：增伤30%）。如果你顺序反了，可能导致增伤无法正确作用于草人传递后的数值。',
+        combatScenario: {
+          title: '实战：配速的重要性',
+          description: '为什么丑女必须比输出快？',
+          calculation: '输出向量 $v$ 必须左乘草人矩阵 $A$，即 $A v$。如果输出先动，运算变成 $v$，下一回合才是 $A$。',
+          result: '矩阵运算顺序错误（配速乱了），直接导致伤害归零或大幅降低。'
+        }
+      },
+      {
+        title: '特征值 = 纯粹的增伤倍率',
         characterName: 'SP 烬天玉藻前',
-        characterImage: 'https://p1.music.126.net/g3y7XV7w9q9q9q9q9q9q9g==/109951163065675865.jpg',
+        characterImage: 'https://placehold.co/600x800/1c1917/b45309?text=SP+Tamamo+no+Mae&font=playfair-display',
         content: '在某些特定的方向上（特征向量），御魂的增益纯粹是数值的放大（特征值），而不会改变属性的比例结构。',
         formula: 'A v = \\lambda v',
         explanation: '如果一个向量变换后方向不变，只长度变了，它就是特征向量。缩放倍数 $\\lambda$ 就是特征值。',
-        analogy: '对于“纯输出”式神（特征向量），堆攻击加成（矩阵变换）是极其高效的，因为方向一致，$\lambda$ 很大。',
+        analogy: '对于“纯输出”式神（特征向量），堆攻击加成（矩阵变换）是极其高效的，因为方向一致，$\\lambda$ 很大。',
         combatScenario: {
           title: '实战：魂土收尾',
           description: '烬天玉藻前的9段伤害随机分配。',
@@ -64,9 +79,9 @@ export const CHAPTERS: Chapter[] = [
     icon: 'curve',
     sections: [
       {
-        title: '导数 = 瞬时DPS (Damage Per Second)',
+        title: '导数 = 瞬时DPS',
         characterName: 'SSR 泷夜叉姬',
-        characterImage: 'https://yys.163.com/zt/2019/takiyashihime/images/bg_b0f3e3.jpg',
+        characterImage: 'https://placehold.co/600x800/1c1917/4338ca?text=SSR+Takiyashihime&font=playfair-display',
         content: '有些式神需要暖机（如叠“新月”buff）。伤害函数 $D(t)$ 不是常数。导数 $D\'(t)$ 描述了伤害随时间的增长速度。',
         formula: "DPS(t) = \\lim_{\\Delta t \\to 0} \\frac{D(t+\\Delta t) - D(t)}{\\Delta t}",
         explanation: '导数是变化率。如果 $D\'(t) > 0$，说明你的式神正在变强（叠Buff中）。',
@@ -81,7 +96,7 @@ export const CHAPTERS: Chapter[] = [
       {
         title: '积分 = 结算界面的总伤害',
         characterName: 'SR 书翁',
-        characterImage: 'https://yys.163.com/',
+        characterImage: 'https://placehold.co/600x800/1c1917/4338ca?text=SR+Bukkuman&font=playfair-display',
         content: '书翁的大招“万象之书”记录队友在这一回合内造成的所有伤害，然后在下回合引爆。这本质上是一个定积分运算。',
         formula: 'Damage_{record} = \\int_{t_{start}}^{t_{end}} D_{team}(t) \\, dt',
         explanation: '积分是函数的累积量，即曲线下的面积。',
@@ -94,9 +109,9 @@ export const CHAPTERS: Chapter[] = [
         }
       },
       {
-        title: '梯度 (Gradient) = 御魂强化的最优方向',
+        title: '梯度 = 御魂强化的最优方向',
         characterName: 'SSR 须佐之男',
-        characterImage: 'https://yys.163.com/',
+        characterImage: 'https://placehold.co/600x800/1c1917/4338ca?text=SSR+Susanoo&font=playfair-display',
         content: '你的伤害是多元函数 $f(ATK, CRIT, CDMG)$。当你只有有限的御魂副属性点数时，给谁加点收益最高？',
         formula: '\\nabla f = \\left( \\frac{\\partial f}{\\partial ATK}, \\frac{\\partial f}{\\partial CDMG} \\right)',
         explanation: '梯度向量指向函数增长最快的方向。',
@@ -120,7 +135,7 @@ export const CHAPTERS: Chapter[] = [
       {
         title: '条件概率与针女触发',
         characterName: 'SSR 大天狗',
-        characterImage: 'https://yys.163.com/',
+        characterImage: 'https://placehold.co/600x800/1c1917/b45309?text=SSR+Ootengu&font=playfair-display',
         content: '大天狗带针女御魂（40%概率造成最大生命值10%伤害，前提是必须先暴击）。这是一个典型的条件概率模型。',
         formula: 'P(\\text{Trigger}) = P(\\text{Crit}) \\times P(\\text{Seductress} | \\text{Crit})',
         explanation: '事件B（针女）发生的概率，依赖于事件A（暴击）是否先发生。',
@@ -135,7 +150,7 @@ export const CHAPTERS: Chapter[] = [
       {
         title: '数学期望 = 魂土平均通关时间',
         characterName: 'SP 因幡辉夜姬',
-        characterImage: 'https://yys.163.com/',
+        characterImage: 'https://placehold.co/600x800/1c1917/b45309?text=SP+Kaguya&font=playfair-display',
         content: '为了计算刷1000体力的平均耗时，我们需要算期望。假设不翻车耗时30s，翻车耗时60s。',
         formula: 'E(T) = 30 \\times P(\\text{Win}) + 60 \\times P(\\text{Lose})',
         explanation: '期望是随机变量加权平均后的中心值。',
@@ -150,7 +165,7 @@ export const CHAPTERS: Chapter[] = [
       {
         title: '贝叶斯公式 = 抽卡血统鉴定',
         characterName: '阴阳师 晴明',
-        characterImage: 'https://yys.163.com/',
+        characterImage: 'https://placehold.co/600x800/1c1917/b45309?text=Seimei&font=playfair-display',
         content: '当你抽到SSR时，你想知道这是因为“全图鉴UP”生效了，还是仅仅是你运气好（0.01裸抽）？',
         formula: 'P(\\text{UP} | \\text{SSR}) = \\frac{P(\\text{SSR} | \\text{UP}) P(\\text{UP})}{P(\\text{SSR})}',
         explanation: '贝叶斯公式用于根据观察到的结果（抽到SSR），反推原因（是不是UP机制导致的）。',
