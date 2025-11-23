@@ -39,7 +39,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject, title, active, onCli
   const config = getSoulConfig();
 
   return (
-    <div className="flex flex-col items-center gap-2 group">
+    <div className="flex flex-col items-center gap-2 group flex-shrink-0">
       <button
         onClick={onClick}
         className={`

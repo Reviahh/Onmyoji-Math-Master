@@ -24,7 +24,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({ children, title }) =>
         />
 
         {/* Content Wrapper */}
-        <div className="relative p-6 md:p-10 text-stone-800 flex-1">
+        <div className="relative p-5 md:p-10 text-stone-800 flex-1">
           
           {/* Inner Border */}
           <div className="absolute top-3 bottom-3 left-3 right-3 border border-stone-300 pointer-events-none" />

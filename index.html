@@ -29,6 +29,7 @@
       /* Custom Scrollbar for that ancient feel */
       ::-webkit-scrollbar {
         width: 8px;
+        height: 8px;
       }
       ::-webkit-scrollbar-track {
         background: #292524; 
@@ -39,6 +40,15 @@
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #92400e; 
+      }
+      
+      /* Utility to hide scrollbar but allow scrolling */
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
       }
       
       /* KaTeX Adjustment for Chinese Text alignment */
