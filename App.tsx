@@ -7,7 +7,7 @@ import MathRenderer from './components/MathRenderer';
 import SubjectCard from './components/SubjectCard';
 import { 
   BookOpen, Flame, Calculator, Sparkles, ChevronRight, ChevronLeft, ScrollText,
-  Sword, Wind, Zap, Heart, Shield, Crosshair, Star
+  Sword, Wind, Zap, Heart, Shield, Crosshair, Star, CheckCircle2, XCircle, BrainCircuit
 } from 'lucide-react';
 
 // Utility to parse text with inline LaTeX ($...$) and render efficiently
@@ -275,27 +275,55 @@ const App: React.FC = () => {
                 </div>
 
                 {activeSection.combatScenario && (
-                   <div className="bg-[#2a2a2a] rounded border border-stone-600 overflow-hidden font-mono text-sm shadow-md mt-4">
-                     <div className="bg-[#1a1a1a] px-3 py-1.5 border-b border-stone-600 flex justify-between items-center">
-                       <span className="text-green-500 font-bold flex items-center gap-2 text-xs tracking-wider">
-                         <Calculator className="w-3 h-3" /> BATTLE_SIMULATION_LOG
+                   <div className="bg-[#1f1f1f] rounded border border-stone-600 overflow-hidden font-mono text-sm shadow-md mt-4">
+                     <div className="bg-[#151515] px-4 py-2 border-b border-stone-600 flex justify-between items-center">
+                       <span className="text-stone-400 font-bold flex items-center gap-2 text-xs tracking-wider">
+                         <Calculator className="w-3 h-3" /> COMBAT_SIMULATION_V2.0
                        </span>
+                       <span className="text-[10px] text-stone-600">LOG_ID: {Math.floor(Math.random() * 99999)}</span>
                      </div>
-                     <div className="p-4 space-y-3 text-stone-300">
-                        <div className="flex gap-4">
-                           <span className="text-stone-500 w-16 shrink-0 text-xs pt-1">SCENARIO</span>
-                           <div>
-                              <p className="text-stone-100 font-bold"><MathParser text={activeSection.combatScenario.title} /></p>
-                              <p className="text-stone-400 text-xs"><MathParser text={activeSection.combatScenario.description} /></p>
-                           </div>
+                     
+                     <div className="p-4 border-b border-stone-700/50 bg-[#232323]">
+                        <span className="text-amber-500 text-xs font-bold block mb-1">SCENARIO SETUP:</span>
+                        <p className="text-stone-300"><MathParser text={activeSection.combatScenario.intro} /></p>
+                     </div>
+
+                     <div className="grid grid-cols-1 md:grid-cols-2">
+                        {/* Correct Scenario */}
+                        <div className="p-4 bg-green-900/10 border-r border-stone-700/50">
+                            <div className="flex items-center gap-2 mb-2">
+                                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                                <span className="text-green-400 font-bold text-xs"><MathParser text={activeSection.combatScenario.correct.label} /></span>
+                            </div>
+                            <p className="text-stone-400 text-xs mb-2 pl-6"><MathParser text={activeSection.combatScenario.correct.description} /></p>
+                            <div className="pl-6 pt-2 border-t border-green-900/30">
+                                <span className="text-[10px] text-green-600 uppercase font-bold">Outcome</span>
+                                <p className="text-green-200/90 font-medium"><MathParser text={activeSection.combatScenario.correct.result} /></p>
+                            </div>
                         </div>
-                        <div className="flex gap-4">
-                           <span className="text-blue-500 w-16 shrink-0 text-xs pt-1">CALC</span>
-                           <div className="text-blue-200/90 italic"><MathParser text={activeSection.combatScenario.calculation} /></div>
+
+                        {/* Incorrect Scenario */}
+                        <div className="p-4 bg-red-900/10">
+                            <div className="flex items-center gap-2 mb-2">
+                                <XCircle className="w-4 h-4 text-red-500" />
+                                <span className="text-red-400 font-bold text-xs"><MathParser text={activeSection.combatScenario.incorrect.label} /></span>
+                            </div>
+                            <p className="text-stone-400 text-xs mb-2 pl-6"><MathParser text={activeSection.combatScenario.incorrect.description} /></p>
+                            <div className="pl-6 pt-2 border-t border-red-900/30">
+                                <span className="text-[10px] text-red-600 uppercase font-bold">Outcome</span>
+                                <p className="text-red-300/90 font-medium"><MathParser text={activeSection.combatScenario.incorrect.result} /></p>
+                            </div>
                         </div>
-                        <div className="flex gap-4 items-center bg-stone-800/50 p-2 rounded -mx-2">
-                           <span className="text-green-500 w-16 shrink-0 text-xs pl-2">RESULT</span>
-                           <div className="text-green-400 font-bold"><MathParser text={activeSection.combatScenario.result} /></div>
+                     </div>
+                     
+                     {/* Math Analysis Footer */}
+                     <div className="p-3 bg-[#1a1a1a] border-t border-stone-600 flex gap-3">
+                        <BrainCircuit className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                        <div>
+                             <span className="text-purple-400 text-[10px] font-bold uppercase block mb-0.5">Analysis</span>
+                             <p className="text-stone-400 text-xs leading-relaxed italic">
+                                <MathParser text={activeSection.combatScenario.mathAnalysis} />
+                             </p>
                         </div>
                      </div>
                    </div>

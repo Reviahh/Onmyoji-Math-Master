@@ -9,11 +9,17 @@ export enum SubjectType {
   CATEGORY_THEORY = 'CATEGORY_THEORY'
 }
 
+export interface ScenarioDetail {
+  label: string; // e.g. "Case A: 满暴"
+  description: string; // The specific setup
+  result: string; // The outcome
+}
+
 export interface CombatScenario {
-  title: string;
-  description: string; // The setup
-  calculation: string; // The math applied
-  result: string; // The in-game outcome
+  intro: string; // General problem statement
+  correct: ScenarioDetail; // The positive example
+  incorrect: ScenarioDetail; // The negative example
+  mathAnalysis: string; // Why the math makes one work and the other fail
 }
 
 export interface Section {

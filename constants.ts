@@ -18,10 +18,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '向量是“由多个数构成的一个整体”。在线性代数中，我们不关心“攻击”具体的物理意义，我们只关心这个向量在属性空间中的位置和它能进行的变换。',
         analogy: '你的式神面板就是一个列向量 $v$。阴阳师里所有式神的集合，就构成了一个庞大的“式神向量空间”。',
         combatScenario: {
-          title: '实战：面板达标检测',
-          description: '魂土（悲鸣）副本要求茨木面板必须达标才能秒杀第一层。',
-          calculation: '这相当于计算两个向量的内积。设加权向量 $w$，我们需要 $v \\cdot w > \\text{阈值}$。',
-          result: '如果内积结果小于阈值，虽然你是茨木，但也只是“猜拳童子”，无法过本。'
+          intro: '魂土副本第一层，要求茨木一拳清场。这是对向量模长（强度）的严格检测。',
+          correct: {
+            label: '✅ 面板达标',
+            description: '攻击=10000, 暴伤=280%, 速度>158',
+            result: '向量内积 > 怪物血量。小怪全清，效率极高。'
+          },
+          incorrect: {
+            label: '❌ 速度维缺失',
+            description: '攻击=12000, 暴伤=300%, 速度=112',
+            result: '虽然攻击分量很大，但速度分量 < 怪物速度向量。茨木还未出手，怪物先行动浪费时间，通关失败。'
+          },
+          mathAnalysis: '向量的有效性取决于所有维度的综合表现。仅仅在一个维度（攻击）拉长向量，若忽略了另一维度（速度）的阈值约束，结果为零。'
         }
       },
       {
@@ -33,10 +41,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '矩阵 $A$ 作为一个算子（Operator），作用在向量 $v$ 上，将其映射为一个新的向量 $v\'$。',
         analogy: '御魂就是矩阵。御魂强化+15，就是增大了矩阵对角线上的元素值（Scaling），让输出向量变得更长。',
         combatScenario: {
-          title: '实战：拉条机制',
-          description: '山兔使用了“兔子舞”，拉条30%。',
-          calculation: '全队的时间轴位置向量 $T$ 左乘了一个位移矩阵，使得所有人的位置 $t_{new} = t_{old} + 0.3 \\times L$。',
-          result: '这就是线性位移。如果你的初速度不够（向量模长太短），拉条也救不了你（被超车）。'
+          intro: '面对满血的石距BOSS，选择哪种御魂矩阵进行变换？',
+          correct: {
+            label: '✅ 破势矩阵',
+            description: '敌方血量 > 70%，破势矩阵倍率为 1.4',
+            result: '伤害 = 基础伤害 × 1.4。开局爆发极高，快速压血线。'
+          },
+          incorrect: {
+            label: '❌ 心眼矩阵',
+            description: '敌方血量 > 70%，心眼矩阵倍率为 1.0 (单位矩阵)',
+            result: '伤害 = 基础伤害 × 1.0。心眼在低血量区才生效，此时它相当于一个没有效果的单位矩阵 $I$。'
+          },
+          mathAnalysis: '线性算子（御魂）通常是分段定义的。在定义域（血量区间）错误的地方使用算子，等同于乘以单位矩阵，毫无增益。'
         }
       },
       {
@@ -48,10 +64,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '运算顺序至关重要。$AB \\neq BA$。先穿衣服再洗澡，和先洗澡再穿衣服，结果截然不同。',
         analogy: '先放“丑时之女”的草人（矩阵 $A$），再放“晴明”的星（矩阵 $B$）。如果你顺序反了，可能导致增伤无法正确作用于传递后的伤害数值。',
         combatScenario: {
-          title: '实战：配速的重要性',
-          description: '为什么丑女必须比输出快？',
-          calculation: '输出向量 $v$ 必须左乘草人矩阵 $A$。如果输出先动，运算变成 $v$，下一回合才是 $A$。',
-          result: '矩阵运算顺序错误（配速乱了），直接导致伤害归零或大幅降低。'
+          intro: '丑时之女（草人）与晴明（星/灭）的释放顺序。',
+          correct: {
+            label: '✅ 先草人 后贴灭',
+            description: '草人继承防御 $D$，贴灭后防御变为 $D \\times 0.7$。',
+            result: '防御降低，我方输出经过矩阵运算后伤害最大化。'
+          },
+          incorrect: {
+            label: '❌ 先贴灭 后草人',
+            description: '先给BOSS贴灭，BOSS防御降低。草人再插出来，草人继承的是BOSS的原始防御（非负面状态）。',
+            result: '草人防御依然很高。运算顺序错误，导致减防矩阵 $M_{def}$ 未能作用于草人向量。'
+          },
+          mathAnalysis: '矩阵乘法的非交换性 ($AB \\neq BA$) 在这里体现为状态继承的快照机制。操作顺序直接决定最终数值。'
         }
       },
       {
@@ -63,10 +87,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '如果一个向量变换后方向不变，只长度变了，它就是特征向量。',
         analogy: '对于“纯输出”式神（特征向量），堆攻击加成是极其高效的，因为方向一致，$\\lambda$ 很大。',
         combatScenario: {
-          title: '实战：魂土收尾',
-          description: '烬天玉藻前的9段伤害随机分配。',
-          calculation: '如果场上只剩大蛇一个单位（特征向量方向），所有伤害矩阵的运算都将作用在同一个目标上。',
-          result: '此时伤害效率最大化（特征值最大），这就叫“对单体特攻”。'
+          intro: '御魂副属性强化：攻击加成 vs 防御加成。',
+          correct: {
+            label: '✅ 强化攻击 (特征方向)',
+            description: '烬天玉藻前是纯输出模型。强化攻击+3%',
+            result: '向量在主特征方向（输出）上伸长。$\\lambda > 1$，收益最大化。'
+          },
+          incorrect: {
+            label: '❌ 强化防御 (正交方向)',
+            description: '强化防御+3%',
+            result: '向量在与输出正交的方向上有了分量。这对伤害函数 $f(v)$ 毫无贡献（投影为0）。歪了，废了。'
+          },
+          mathAnalysis: '在特征向量方向上的投影决定了系统的效能。向无效维度（防御）投入资源，是线性空间中最大的浪费。'
         }
       }
     ]
@@ -87,25 +119,41 @@ export const CHAPTERS: Chapter[] = [
         explanation: '导数是变化率。如果 $D\'(t) > 0$，说明你的式神正在变强（叠Buff中）。',
         analogy: '泷夜叉姬前几回合伤害低，随着回合数 $t$ 增加，Buff层数增加，导数保持正值，直到叠满。',
         combatScenario: {
-          title: '实战：长线 vs 短线',
-          description: '你是带“阿修罗”还是“紧那罗”？',
-          calculation: '阿修罗是脉冲函数（瞬间爆发极高，随后归零）。紧那罗是线性增长函数 $k t$。',
-          result: '如果是短时间战斗（求极限 $t \\to 0$），阿修罗更强。如果是3分钟战斗，紧那罗的积分值更大。'
+          intro: '你需要打一个只有10秒的道馆结界（短线战斗）。',
+          correct: {
+            label: '✅ 阿修罗 (脉冲函数)',
+            description: '开局即巅峰，导数 $f\'(0) = \\infty$。',
+            result: '瞬间释放巨大能量，战斗在 $t=2s$ 结束。'
+          },
+          incorrect: {
+            label: '❌ 紧那罗 (线性增长)',
+            description: '需要5个回合暖机，导数 $f\'(t) = k$ (常数增长)。',
+            result: '前10秒伤害极低。还没等 $D(t)$ 增长起来，战斗时间已耗尽。'
+          },
+          mathAnalysis: '选择式神通过判断其伤害函数的导数特性。短线看初值和一阶导，长线看积分面积。'
         }
       },
       {
         title: '积分 = 总伤害量',
         characterName: 'SR 书翁',
         characterImage: 'https://placehold.co/600x800/1c1917/4338ca?text=SR+Bukkuman&font=playfair-display',
-        content: '书翁的大招“万象之书”记录队友在这一回合内造成的所有伤害，然后在下回合引爆。这本质上是一个定积分运算。',
+        content: '书翁的大招“万象之书”记录队友在这一回合内造成的所有伤害，然后在下回合引爆。这本质上就是一个定积分运算。',
         formula: 'D_{total} = \\int_{t_0}^{t_1} d(t) \\, dt',
         explanation: '积分是函数的累积量，即曲线下的面积。',
         analogy: '书翁就是那个“积分器”。他不管你瞬时伤害（导数）怎么跳动，他只管你在一段时间内总共输出了多少面积。',
         combatScenario: {
-          title: '实战：书翁炸裂',
-          description: '书翁记录了茨木、丑女、普攻的所有伤害。',
-          calculation: '若你的输出中间断档了（被控），曲线掉到0，积分面积就会变小。',
-          result: '所以书翁队最怕断火或控制，因为积分区间内函数值为0，总输出大打折扣。'
+          intro: '书翁记录期间（积分区间 $[t_0, t_1]$），输出式神的行动模式。',
+          correct: {
+            label: '✅ 连续高频输出',
+            description: '大天狗/弈 持续多段攻击，函数 $f(t)$ 始终保持高位。',
+            result: '积分面积 $S$ 极大，书翁爆炸伤害达到上限。'
+          },
+          incorrect: {
+            label: '❌ 被控/断火',
+            description: '输出式神被眩晕。函数 $f(t)$ 在区间内跌落为 0。',
+            result: '对 0 函数积分结果为 0。书翁记录了个寂寞，炸了个空气。'
+          },
+          mathAnalysis: '积分的数值高度依赖于区间内函数的连续性。任何间断点（控制、断火）都会导致面积的直接损失。'
         }
       },
       {
@@ -117,10 +165,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '梯度向量指向函数增长最快的方向。',
         analogy: '当你的暴伤已经达到300%时，继续堆暴伤的偏导数可能不如堆攻击的偏导数大。',
         combatScenario: {
-          title: '实战：御魂计算器',
-          description: '为什么大佬的须佐之男要控制攻击和暴伤的比例？',
-          calculation: '因为伤害 $D \\approx ATK \\times CDMG$。这是一个双曲线面。',
-          result: '沿着梯度方向调整御魂（比如降低溢出的暴击，换取攻击），才能达到面板分数的极值点。'
+          intro: '海月火玉御魂配置，已有面板：攻击8000，暴伤300%。还有2次强化机会。',
+          correct: {
+            label: '✅ 强化攻击 (沿梯度)',
+            description: '此时 $\\partial f/\\partial ATK$ 很大。强化攻击至 9000。',
+            result: '总伤害提升显著，达到函数极值点附近。'
+          },
+          incorrect: {
+            label: '❌ 强堆暴伤 (逆梯度)',
+            description: '强行堆暴伤至 320%，但攻击只有 8000。',
+            result: '边际效应递减。虽然暴伤数字好看，但实际伤害期望 $E = A \\times C$ 并没有最优方案高。'
+          },
+          mathAnalysis: '多变量优化问题中，盲目堆单一属性往往陷入局部最优。沿着梯度方向（缺啥补啥）才能爬上全局最高峰。'
         }
       }
     ]
@@ -141,10 +197,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '事件（针女）发生的概率，依赖于事件（暴击）是否先发生。',
         analogy: '如果你满暴（$P=1$），针女触发率就是实打实的40%。如果你只有50%暴击，针女真实触发率只有 $0.5 \\times 0.4 = 20\\%$。',
         combatScenario: {
-          title: '实战：多段攻击优势',
-          description: '大天狗卷4次，至少触发一次针女的概率是多少？',
-          calculation: '逆向思维：一次都不触发的概率是 $(1-0.4)^4 = 0.1296$。',
-          result: '所以至少触发一次的概率是 $87.04\\%$。这解释了为什么段数越多的式神越适合带针女。'
+          intro: '为什么大佬的针女式神一定要满暴击？',
+          correct: {
+            label: '✅ 100% 暴击',
+            description: '条件概率 $P(Hit|Crit) = 40\\%$. 前置条件 $P(Crit)=1$.',
+            result: '每次攻击都有稳定40%期望触发针女。输出平稳。'
+          },
+          incorrect: {
+            label: '❌ 50% 暴击 300% 暴伤',
+            description: '虽然暴伤高，但前置条件 $P(Crit)=0.5$.',
+            result: '针女真实触发率降至 20%。大部分时间既没暴击也没针女，只有白字。'
+          },
+          mathAnalysis: '链式法则 $P(A \\cap B) = P(A|B)P(B)$。当 $P(B)$（暴击率）低时，整个链条断裂，后续的高收益事件根本无法启动。'
         }
       },
       {
@@ -156,10 +220,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '期望是随机变量加权平均后的中心值。',
         analogy: '只要你的翻车率（$P_{lose}$）存在，你的长期平均通关时间就一定大于30s。',
         combatScenario: {
-          title: '实战：满暴的意义',
-          description: '如果你的茨木暴击率是99%。',
-          calculation: '在刷100次副本中，全部暴击的概率是 $0.99^{100} \\approx 36.6\\%$。',
-          result: '这意味着你有63%的概率在100盘里至少翻车一次。所以魂土必须“满暴”，99%暴击=0暴击。'
+          intro: '魂土收尾式神暴击率的选择：99% vs 101%。',
+          correct: {
+            label: '✅ 101% 暴击 (溢出)',
+            description: '翻车率 $p=0$。耗时固定 18s。',
+            result: '期望耗时 $E(T) = 18s$。稳定如山。'
+          },
+          incorrect: {
+            label: '❌ 99% 暴击 (猜拳)',
+            description: '翻车率 $p=0.01$。翻车一次耗时 60s。',
+            result: '虽然只差1点暴击，但在大数定律下，每刷100把必有一次心态爆炸。长期期望效率下降。'
+          },
+          mathAnalysis: '在重复博弈中，小概率的灾难性事件（翻车）会显著拉低整体期望。只有 $P=1$ 才能消除方差风险。'
         }
       },
       {
@@ -171,10 +243,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '贝叶斯公式用于根据观察到的结果（抽到SSR），反推原因（是不是UP机制导致的）。',
         analogy: '这能算出你究竟是“伪欧皇”（靠保底机制出的）还是“真欧皇”（靠阳寿出的）。',
         combatScenario: {
-          title: '实战：60抽沉船',
-          description: '活动期间60抽没出SSR，概率是多少？',
-          calculation: '若概率为1%，则 $0.99^{60} \\approx 0.547$。',
-          result: '也就是说，60抽沉船其实是大概率事件（54.7%）。不要怪游戏，要怪数学。'
+          intro: '活动卡池：定向UP概率提升至 25%。你一发十连出了UP式神。',
+          correct: {
+            label: '✅ 大概率是UP生效',
+            description: '先验概率 $P(UP)$ 被官方调高了。',
+            result: '贝叶斯更新后，这属于“正常预期”内的事件。'
+          },
+          incorrect: {
+            label: '❌ 认为自己运气变好了',
+            description: '误以为基础出货率变高，继续头铁强抽无UP的卡池。',
+            result: '基础概率 $P(Base)$ 依然是 1%。迅速把勾玉亏光。'
+          },
+          mathAnalysis: '混淆“后验概率”与“先验分布”是赌徒破产的主要原因。要分清是环境（UP）变了，还是你变了。'
         }
       }
     ]
@@ -195,10 +275,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '全集是当前讨论的所有对象的总和。空集是不包含任何元素的集合。青行灯的被动“明灯”就是在空集（无火）时创造元素（鬼火）的奇迹。',
         analogy: '你的图鉴就是一个集合 $S$。未收录活动本质上是在全集 $U$ 和你的集合 $S$ 的差集 $U - S$ 中随机抽取一个元素。',
         combatScenario: {
-          title: '实战：未收录SSR',
-          description: '为什么真全图鉴玩家抽卡必定出新式神？',
-          calculation: '因为 $U - S$ 仅包含新式神 $\{New\}$。抽样空间被压缩到了单点集。',
-          result: '集合论保证了你必定抽到那个唯一的“补集元素”。'
+          intro: '未收录SSR活动，你的图鉴差集 $U-S$ 的状态。',
+          correct: {
+            label: '✅ 真全图鉴',
+            description: '你的集合 $S$ 包含了除新式神外的所有元素。差集 $|U-S|=1$。',
+            result: '抽卡必定命中新式神。集合论的确定性胜利。'
+          },
+          incorrect: {
+            label: '❌ 断头全图鉴',
+            description: '你缺了5个旧SSR。差集 $|U-S|=6$（含新式神）。',
+            result: '抽到了万年竹（旧卡）。虽然也是未收录，但不是你想要的新元素。'
+          },
+          mathAnalysis: '控制集合的基数（Cardinality）是利用规则获利的前提。差集越小，确定性越高。'
         }
       },
       {
@@ -210,10 +298,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '交集是两个集合共有的部分。在帝释天的控制下，式神既属于对面（占用对面回合），又属于我（听我指挥）。',
         analogy: 'PVP中的“BAN选”环节。你BAN掉的和我BAN掉的式神组成了“禁用集合”的并集 $Ban_A \\cup Ban_B$。',
         combatScenario: {
-          title: '实战：控制覆盖',
-          description: '如果你先冰冻了敌人，又去嘲讽他。',
-          calculation: '状态集合 = \{冰冻\} $\\cup$ \{嘲讽\}。',
-          result: '由于“冰冻”导致无法行动，嘲讽的效果（强制普攻）无法在交集中体现，这叫控制重叠（浪费）。'
+          intro: '控制效果的叠加与覆盖。',
+          correct: {
+            label: '✅ 帝释天 + 小松丸',
+            description: '帝释天操控回合(A)，小松丸变形(B)。$A$ 与 $B$ 作用于不同维度。',
+            result: '形成互补并集。无论能不能动，对面都很难受。'
+          },
+          incorrect: {
+            label: '❌ 雪女 + 兵俑',
+            description: '雪女冰冻(A)，兵俑嘲讽(B)。$A \\subset B$ (无法行动包含于无法普攻)。',
+            result: '冰冻了就不能普攻了，嘲讽没意义。交集冗余，浪费控制位。'
+          },
+          mathAnalysis: '构建阵容时要追求技能集合的“并集最大化”，避免“子集覆盖”导致的效能浪费。'
         }
       },
       {
@@ -225,10 +321,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '如果每个 $x$ 对应唯一的 $y$，且每个 $y$ 都有对应的 $x$，这就是双射（一一对应）。',
         analogy: '如果你给式神穿御魂，这是一对一映射。但如果用“御魂Hub”共享方案，那就是多对一映射（非单射）。',
         combatScenario: {
-          title: '实战：协战机制',
-          description: '姑获鸟的协战。',
-          calculation: '定义函数 $Assisted(Action)$。如果 $Action \\in \\{Normal Attack\\}$，则触发协战。',
-          result: '这是对行动集合的一个特征函数映射 $\\chi_A$。'
+          intro: '御魂套装的分配策略（映射问题）。',
+          correct: {
+            label: '✅ 独立御魂 (双射)',
+            description: '每个式神 $x_i$ 都有专属御魂 $y_i$。$f(x_i) = y_i$。',
+            result: '随时可以上场，无需临时换装。映射稳定。'
+          },
+          incorrect: {
+            label: '❌ 共享御魂 (多对一)',
+            description: '大舅和茨木共用一套爆伤破势 $Y$。',
+            result: '当需要两人同时上场时，映射冲突。必须拆东墙补西墙，导致战力崩塌。'
+          },
+          mathAnalysis: '理想的资源分配应当是双射（Bijection）。一旦出现多对一，系统的灵活性（Flexibility）就会受到拓扑结构的限制。'
         }
       }
     ]
@@ -249,10 +353,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '在实变函数中，我们关注集合的“大小”（测度）。镰鼬的多次行动使得他的行动集测度发生了跃变。',
         analogy: '这就是为什么270速的镰鼬（有被动）比270速的阎魔（无被动）跑得快。他的“有效行动测度”更大。',
         combatScenario: {
-          title: '实战：时间静止',
-          description: '当行动条被无限拉动时。',
-          calculation: '己方行动集合的测度趋向于全集 $T$，敌方行动集合的测度被挤压为 $0$（零测集）。',
-          result: '这就是“双拉一波流”。虽然时间在流逝，但敌人的有效回合数为零。'
+          intro: '抢一速：双拉条体系 vs 单拉条体系。',
+          correct: {
+            label: '✅ 双拉 (镰鼬+山兔)',
+            description: '连续两次推条/拉条。将敌方行动测度压缩至接近 0。',
+            result: '敌方全程静止，我方行动测度覆盖全集。'
+          },
+          incorrect: {
+            label: '❌ 单拉被插队',
+            description: '只用一个镰鼬拉条。敌方超高速阎魔插入中间。',
+            result: '虽然拉了30%，但剩余的 70% 测度区间内存在敌方测度非零点。被控，G。'
+          },
+          mathAnalysis: '控制战局的本质是让敌方的有效行动集合成为“零测集”（Measure Zero Set）。'
         }
       },
       {
@@ -264,10 +376,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '将定义域划分改为值域划分。计算时：防御为0的怪有几个？防御为500的有几个？然后分别求和。',
         analogy: '这种算法对于“清姬”这种能将敌人防御统一（使函数值域退化）的辅助极其友好。',
         combatScenario: {
-          title: '实战：清姬+面灵气',
-          description: '清姬将所有怪防御降为0。',
-          calculation: '防御函数 $f(x)$ 变成了常数。勒贝格积分计算瞬间简化为 $Damage \\times Count$。',
-          result: '这就是间接伤害清场快的原因：数学结构上的计算优势。'
+          intro: '超鬼王群体AOE伤害计算。',
+          correct: {
+            label: '✅ 清姬 + 面灵气',
+            description: '清姬将所有怪防御降为 0。值域集合 $V=\{0\}$。',
+            result: '面灵气伤害计算简化，针对防御为0的集合测度最大化。伤害爆炸。'
+          },
+          incorrect: {
+            label: '❌ 只有面灵气',
+            description: '怪的防御参差不齐 $V=\{200, 500, 1000\}$。',
+            result: '勒贝格积分被分割成多个小块，无法形成统一的高额爆发。效率低下。'
+          },
+          mathAnalysis: '通过预处理（清姬）简化被积函数的值域结构，可以极大地优化积分结果（伤害）。'
         }
       },
       {
@@ -279,10 +399,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '“几乎处处”允许存在一个概率为0的失败集。但魂土竞速不能容忍这个失败集。',
         analogy: '针女打100把，平均99把过，1把翻车。这在竞速中是不可接受的。',
         combatScenario: {
-          title: '实战：收尾选择',
-          description: '为什么魂土收尾不用大天狗？',
-          calculation: '我们需要一致收敛，确保每一把的伤害下界 $\\inf(D)$ 都大于怪物血量。',
-          result: '只有放弃实变函数中的随机测度，追求分析学的一致性，才能达成18秒稳定速刷。'
+          intro: '魂土18秒速刷阵容的稳定性要求。',
+          correct: {
+            label: '✅ 须佐/阿修罗 (一致收敛)',
+            description: '伤害是固定的常数函数。',
+            result: '每一把都是18秒。方差为0。完全可控。'
+          },
+          incorrect: {
+            label: '❌ 弈/二口女 (随机收敛)',
+            description: '依赖9段随机目标 + 针女概率。',
+            result: '运气好15秒，运气差30秒甚至翻车。无法作为工业化刷图的标准。'
+          },
+          mathAnalysis: '工业级应用（速刷）需要的是“一致收敛”（Uniform Convergence），而不仅仅是概率上的“几乎处处收敛”。'
         }
       }
     ]
@@ -303,10 +431,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '阿修罗的强大源于他的模长 $|z|$ 极大，但他的弱点在于幅角 $\\theta$ 不稳定。当 $\\theta$ 旋转到虚轴时，攻击目标变得随机（混乱）。',
         analogy: '帝释天的控制技能本质上是一个“实轴投影算子”，强行将阿修罗的 $z$ 投影回实轴，消除虚部 $iy$ 的混乱影响。',
         combatScenario: {
-          title: '实战：免控机制',
-          description: '为什么阿修罗发疯时会杀队友？',
-          calculation: '因为攻击向量 $v$ 被乘上了一个旋转矩阵 $R(\\pi/2)$，方向完全改变。',
-          result: '控制理智（虚部）是使用复数型式神的核心。'
+          intro: '阿修罗击杀单位后理智归零，进入无差别攻击模式。',
+          correct: {
+            label: '✅ 搭配帝释天/缚骨清姬',
+            description: '使用技能强制拉回。投影算子 $P(z) = Re(z)$。',
+            result: '阿修罗恢复理智，不再痛击队友。相位复位。'
+          },
+          incorrect: {
+            label: '❌ 放任自流',
+            description: '没有队友能拉回。$z$ 保持在虚轴 $iy$ 上。',
+            result: '阿修罗一巴掌拍死自己的座敷童子。全队翻车。'
+          },
+          mathAnalysis: '复数系统的稳定性取决于幅角 $\\theta$ 的控制。缺乏相位控制的高模量系统是极度危险的。'
         }
       },
       {
@@ -318,10 +454,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '当你献祭一个队友（制造奇点），你在该点原本的函数解析性被破坏了，但积分回路（大招）从中提取出了巨大的能量（天羽羽斩）。',
         analogy: '留数定理告诉我们，有时候为了计算一个庞大的能量（全屏伤害），我们需要关注那些不可解析的点（死掉的队友）。',
         combatScenario: {
-          title: '实战：献祭流',
-          description: '为什么变剑之后伤害更高？',
-          calculation: '战场上每一个被移除的单位（极点）都贡献了一个非零的留数项。',
-          result: '大招的最终伤害等于所有被献祭队友留数的总和。'
+          intro: 'SP大蛇攒篡位层数，准备释放终极奥义。',
+          correct: {
+            label: '✅ 快速献祭 (制造奇点)',
+            description: '队友迅速阵亡变为蛇魔。复平面上出现多个 Singularity。',
+            result: '回路积分包围所有奇点，留数总和最大，大招毁天灭地。'
+          },
+          incorrect: {
+            label: '❌ 队友太肉不死',
+            description: '队友一直活着。函数处处解析（Holomorphic），没有奇点。',
+            result: '根据柯西积分定理，闭回路积分结果为 0。大蛇刮痧，毫无伤害。'
+          },
+          mathAnalysis: '解析函数（活着的队友）没有能量贡献。只有破坏解析性（献祭），利用奇点的留数，才能提取出物理意义上的“能量”。'
         }
       },
       {
@@ -333,10 +477,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '多值函数 $\\sqrt{z}$ 需要两张复平面粘贴在一起才能构成单值解析域。云外镜的“翻转”就是在跨越分支切割（Branch Cut）。',
         analogy: '当你使用技能“苦海浮生”时，你并不是在加血，而是在黎曼曲面上从“阴叶”滑到了“阳叶”。血条看似满了，实际上是进入了另一个函数分支。',
         combatScenario: {
-          title: '实战：镜佑保命',
-          description: '为什么云外镜一半血是满的？',
-          calculation: '因为他的生命值定义域是双层的。',
-          result: '理解了这个拓扑结构，你就明白了为什么治疗对他往往是反向作用（在另一个分支上移动）。'
+          intro: '云外镜面对治疗和恢复的效果。',
+          correct: {
+            label: '✅ 翻转技能 (跨越割线)',
+            description: '主动使用技能，从阴面跳跃到阳面。',
+            result: '瞬间改变状态，获得护盾/治疗。利用拓扑结构规避伤害。'
+          },
+          incorrect: {
+            label: '❌ 传统奶妈加血',
+            description: '桃花妖对着阴面状态的云外镜加血。',
+            result: '治疗被定义为“扣血上限”或无效。因为在阴分支上，Metric（度量）是反的。'
+          },
+          mathAnalysis: '在多叶黎曼曲面上，常规的线性操作（加血）可能因为所在分支（Sheet）的不同而产生完全相反的物理效果。'
         }
       }
     ]
@@ -357,10 +509,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '范畴论不关心对象的内部结构（属性），只关心对象之间的关系（态射）。SP荒的“星爆”不看你具体是谁，只看你触发了什么事件（态射）。',
         analogy: '“预言”系统本质上是对未来态射的一种约束。你必须按照规定的路径（Morphsim）走，否则受到惩罚。',
         combatScenario: {
-          title: '实战：回合外机制',
-          description: '伪回合（如反击）是否属于态射复合？',
-          calculation: '是的。反击是插入在两个主要态射 $f$ 和 $g$ 之间的中间态射 $h$。',
-          result: '如果 $h$ 打断了 $f$ 的复合性（如眩晕），则整个交换图表（Commutative Diagram）无法闭合。'
+          intro: 'SP荒针对不消耗鬼火的行动进行惩罚。',
+          correct: {
+            label: '✅ 普攻/0火技能',
+            description: '敌方触发了 $Action_{0-orb}$ 态射。',
+            result: '满足范畴约束条件，触发星爆反击。无论你是谁，只要路径匹配就得死。'
+          },
+          incorrect: {
+            label: '❌ 消耗鬼火技能',
+            description: '敌方使用了耗火技能。态射类型不匹配。',
+            result: '交换图表（Commutative Diagram）不闭合，反击无法触发。'
+          },
+          mathAnalysis: '基于范畴的机制（如反击）只关注态射的类型（Type），而完全忽略对象的内部属性（血量/防御）。'
         }
       },
       {
@@ -370,12 +530,20 @@ export const CHAPTERS: Chapter[] = [
         content: '不知火的“星火满天”是一个函子 $F$。它将“普通攻击”范畴 $\\mathcal{C}$ 映射到了“两次攻击+吸血”范畴 $\\mathcal{D}$。',
         formula: 'F(f: X \\to Y) = F(f): F(X) \\to F(Y)',
         explanation: '函子保持了结构的同构性。普攻还是普攻，但性质变了。所有依赖普攻的式神（酒吞、化鲸）都在这个函子作用下获得了升维。',
-        analogy: '这也是为什么不知火体系能容纳万物。她不仅仅是一个辅助，她是改变了底层战斗逻辑（范畴结构）的函子。',
+        analogy: '也是为什么不知火体系能容纳万物。她不仅仅是一个辅助，她是改变了底层战斗逻辑（范畴结构）的函子。',
         combatScenario: {
-          title: '实战：普攻队',
-          description: '为什么酒吞在离吞吞体系这么强？',
-          calculation: '因为酒吞的输出算子 $S$ 被函子 $F$ 作用后，变成了 $S\' = 2S + \\text{Buff}$。',
-          result: '原本线性的伤害增长变成了指数级爆炸，这是结构性变革。'
+          intro: '不知火结界下的普攻系式神。',
+          correct: {
+            label: '✅ 酒吞童子 (适配函子)',
+            description: '酒吞的普攻 $f$ 被映射为 $F(f) = 2f$ (连击)。',
+            result: '原本的单次攻击变成了双倍快乐。函子 $F$ 完美保持并增强了 $f$ 的结构。'
+          },
+          incorrect: {
+            label: '❌ 妖刀姬 (不适配)',
+            description: '妖刀姬主要靠大招 $g$ (技能)。$F$ 只作用于普攻范畴。',
+            result: '函子 $F$ 对大招 $g$ 是恒等映射或无效。体系不兼容，效果平平。'
+          },
+          mathAnalysis: '函子（Functor）的威力在于将一个范畴内的所有对象批量升维。如果对象本身不在该范畴（不用普攻），则无法享受升维红利。'
         }
       },
       {
@@ -387,10 +555,18 @@ export const CHAPTERS: Chapter[] = [
         explanation: '米田引理告诉我们：你不需要知道式神的内部代码。你只要知道它打谁、谁打它（Hom-set），你就完全掌握了这个式神的性质。',
         analogy: '强制嘲讽（义理之心）强迫敌方建立一个指向我的态射。通过控制所有的态射（互动），我就控制了对象本身。',
         combatScenario: {
-          title: '实战：破核',
-          description: '面对复杂的机制怪（如千姬、SP花）。',
-          calculation: '不用管她被动多复杂。强制她普攻（建立简单态射），她的复杂结构就坍缩了。',
-          result: '这就是为什么铃鹿御前是万能解：她通过控制交互（Morphsim）来定义对手。'
+          intro: '处理拥有复杂无敌/躲避机制的式神（如SP荒川、千姬）。',
+          correct: {
+            label: '✅ 强制普攻 (建立态射)',
+            description: '铃鹿御前强迫目标对她发起攻击 $f: Enemy \\to Suzuka$。',
+            result: '无论目标原本处于什么无敌状态，为了完成态射 $f$，它必须“显形”并行动。机制被破解。'
+          },
+          incorrect: {
+            label: '❌ 试图直接击杀',
+            description: '使用高伤害技能直接打。目标处于“不可选中”状态。',
+            result: '没有建立有效的态射（Interaction），攻击落空。你无法观测或影响一个切断了所有外部联系的对象。'
+          },
+          mathAnalysis: '米田引理的实战应用：不要试图去解析黑箱（无敌机制）的内部，而是通过强迫它建立外部联系（态射）来坍缩它的状态。'
         }
       }
     ]
